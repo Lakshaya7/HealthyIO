@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 max-w-4xl mx-auto">
+    
+    <!-- Header -->
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-purple-100 rounded-full mb-6 animate-pulse">
+            <i data-lucide="sparkles" class="w-10 h-10 text-purple-600"></i>
+        </div>
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-2">AI Health Coach</h1>
+        <p class="text-xl text-gray-500">Personalized insights powered by Artificial Intelligence.</p>
+    </div>
+
+    <!-- AI Response Card -->
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-purple-100">
+        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white flex items-center gap-3">
+            <i data-lucide="bot" class="w-8 h-8"></i>
+            <h2 class="text-xl font-bold">Coach's Analysis</h2>
+        </div>
+        
+        <div class="p-8 prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            {% if error %}
+                <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 text-center font-bold">
+                    {{ error }}
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="{% url 'add_log' %}" class="px-6 py-3 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition-all">
+                        Log Data Now
+                    </a>
+                </div>
+            {% else %}
+                <!-- Render AI HTML safely -->
+                {{ ai_response|safe }}
+            {% endif %}
+        </div>
+        
+        <div class="bg-gray-50 p-6 border-t border-gray-100 text-center">
+            <a href="{% url 'dashboard' %}" class="px-8 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-sm">
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

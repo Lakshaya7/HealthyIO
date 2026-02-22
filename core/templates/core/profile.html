@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 max-w-4xl mx-auto">
+    
+    <!-- Top Card: Profile Header & BMI -->
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-8 text-white shadow-2xl mb-8 flex flex-col md:flex-row items-center gap-8">
+        <!-- Avatar -->
+        <div class="text-center md:text-left">
+            <div class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-4xl font-bold mb-2 mx-auto md:mx-0 border-4 border-white/30">
+                {{ user.username|make_list|first|upper }}
+            </div>
+            <h2 class="text-3xl font-bold">{{ user.first_name|default:user.username|title }}</h2>
+            <p class="text-purple-100">{{ user.email }}</p>
+        </div>
+
+        <!-- BMI Badge -->
+        <div class="flex-1 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center md:text-left">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-sm uppercase tracking-widest opacity-80 font-bold">Your BMI Score</h3>
+                    <div class="text-5xl font-extrabold mt-1">{{ bmi }}</div>
+                </div>
+                <div class="px-4 py-2 rounded-lg font-bold text-sm bg-white text-purple-600 shadow-lg">
+                    {{ bmi_status }}
+                </div>
+            </div>
+            <div class="mt-4 h-2 bg-black/20 rounded-full overflow-hidden">
+                <!-- Visual Indicator Bar -->
+                <!-- FIX: Used CSS Variable (--bmi) to pass data cleanly to calc() -->
+                <div class="h-full bg-white/90 transition-all duration-1000" 
+                     style="--bmi: {{ bmi|default:0 }}; width: calc(var(--bmi) / 40 * 100%);">
+                </div>
+            </div>
+            <p class="text-xs mt-2 opacity-70">Based on your height and weight.</p>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <i data-lucide="settings" class="w-5 h-5 text-gray-500"></i> Edit Profile Details
+        </h3>
+
+        <form method="POST" class="space-y-8">
+            {% csrf_token %}
+            
+            <!-- Section 1: Account Info -->
+            <div>
+                <h4 class="text-sm font-bold text-purple-600 uppercase mb-4 border-b pb-2">Account Info</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">First Name</label>
+                        {{ u_form.first_name }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Last Name</label>
+                        {{ u_form.last_name }}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Email</label>
+                    {{ u_form.email }}
+                </div>
+            </div>
+
+            <!-- Section 2: Physical Stats -->
+            <div>
+                <h4 class="text-sm font-bold text-teal-600 uppercase mb-4 border-b pb-2">Physical Stats</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Age</label>
+                        {{ p_form.age }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Height (cm)</label>
+                        {{ p_form.height }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Weight (kg)</label>
+                        {{ p_form.weight }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 py-4 bg-purple-600 text-white rounded-xl font-bold shadow-lg hover:bg-purple-700 transition-all flex justify-center items-center gap-2">
+                    <i data-lucide="save" class="w-4 h-4"></i> Save All Changes
+                </button>
+                <a href="{% url 'change_password' %}" class="px-6 py-4 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                    Password
+                </a>
+            </div>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+            <a href="{% url 'logout' %}" class="text-red-500 hover:text-red-700 font-bold text-sm flex items-center justify-center gap-1">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="pt-24 pb-12 px-4 max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Health Tips & Insights</h2>
+        <p class="text-xl text-gray-500 max-w-2xl mx-auto">
+            Small daily habits lead to massive long-term changes. Here is your guide to a healthier lifestyle.
+        </p>
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for tip in tips %}
+        <div class="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group">
+            <div class="w-14 h-14 rounded-2xl bg-{{ tip.color }}-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <!-- Dynamic Class for color using Tailwind string interpolation logic in backend or just hardcode classes if simpler -->
+                <i data-lucide="{{ tip.icon }}" class="w-8 h-8 text-{{ tip.color }}-600"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-{{ tip.color }}-600 transition-colors">{{ tip.title }}</h3>
+            <p class="text-gray-600 leading-relaxed">{{ tip.desc }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Quote Section -->
+    <div class="mt-16 bg-gradient-to-r from-teal-500 to-emerald-600 rounded-3xl p-10 text-white text-center relative overflow-hidden shadow-2xl">
+        <div class="relative z-10">
+            <i data-lucide="quote" class="w-10 h-10 mx-auto mb-4 opacity-50"></i>
+            <p class="text-2xl font-serif italic mb-4">"Take care of your body. It's the only place you have to live."</p>
+            <span class="font-bold tracking-widest uppercase text-sm opacity-80">— Jim Rohn</span>
+        </div>
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+    </div>
+</div>
+{% endblock %}
